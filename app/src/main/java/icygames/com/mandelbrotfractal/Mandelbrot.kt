@@ -38,32 +38,24 @@ class Mandelbrot(context: Context, width: Int, height: Int, iterations: Int, pal
     }
 
     fun generate(bitmap: IntArray) {
-        var pX: Double
-        var pY: Double
         val xS = (MAXX - MINX) / mWidth
         val yS = (MAXY - MINY) / mHeight
 
         var y = 0
         while (y < mHeight) {
-            val sY = MINY + y * yS * zoom
+            val cY = MINY + y * yS * zoom
             var x = 0
             while (x < mWidth) {
-                val sX = MINX + x * xS * zoom
-                var oX = 0.0
-                var oY = 0.0
-                var oX2 = 0.0
-                var oY2 = 0.0
+                val cX = MINX + x * xS * zoom
+                var zx = 0.0
+                var zy = 0.0
                 var i = 0
-                while (i < iter && oX2 + oY2 < END) {
-                    pX = oX2 - oY2 + sX + positionX
-                    pY = START * oX * oY + sY + positionY
-                    oX = pX
-                    oY = pY
-                    oX2 = pX * pX
-                    oY2 = pY * pY
+                while (i < iter && (zx*zx + zy*zy) < END) {
+                    val zxtmp = zx*zx - zy*zy + cX + positionX
+                    zy = START * zx * zy + cY + positionY
+                    zx = zxtmp
                     i++
                 }
-
                 var colorPalette = i * (mPalette.size - 1) / iter
                 if (colorPalette < 0) colorPalette = 0
 
