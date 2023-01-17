@@ -23,7 +23,7 @@ class Mandelbrot(context: Context, width: Int, height: Int, iterations: Int, pal
         // for example, set some of the values:   [or just uncomment if you are too lazy :-) ]
 
         // default value:
-        zoom = 1.0 ;  positionX = 0.0 ;  positionY = 0.0 ;  iter = 100
+        zoom = 1.0; positionX = 0.0; positionY = 0.0; iter = 100
 
 //         zoom = 0.6 ;  positionX = 0.4; ;  positionY = 0.4 ;  iter = 100
 //         zoom = 0.1 ;  positionX = 0.9 ;  positionY = 0.9 ;  iter = 100
@@ -47,23 +47,27 @@ class Mandelbrot(context: Context, width: Int, height: Int, iterations: Int, pal
             var x = 0
             while (x < mWidth) {
                 val cX = MINX + x * xS * zoom
-                var zx = 0.0
-                var zy = 0.0
-                var i = 0
-                while (i < iter && (zx*zx + zy*zy) < END) {
-                    val zxtmp = zx*zx - zy*zy + cX + positionX
-                    zy = START * zx * zy + cY + positionY
-                    zx = zxtmp
-                    i++
-                }
-                var colorPalette = i * (mPalette.size - 1) / iter
-                if (colorPalette < 0) colorPalette = 0
+                var colorIndex = calculateMandelbrot(cX, cY) * (mPalette.size - 1) / iter
+                if (colorIndex < 0) colorIndex = 0
 
-                bitmap[y * mWidth + x] = mPalette[colorPalette]
+                bitmap[y * mWidth + x] = mPalette[colorIndex]
                 x++
             }
             y++
         }
+    }
+
+    fun calculateMandelbrot(cX: Double, cY: Double): Int {
+        var zx = 0.0
+        var zy = 0.0
+        var i = 0
+        while (i < iter && (zx * zx + zy * zy) < END) {
+            val zxtmp = zx * zx - zy * zy + cX + positionX
+            zy = START * zx * zy + cY + positionY
+            zx = zxtmp
+            i++
+        }
+        return i
     }
 
     fun setDimensions(width: Int, height: Int) {
