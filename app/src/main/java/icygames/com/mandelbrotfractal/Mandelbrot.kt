@@ -38,7 +38,7 @@ class Mandelbrot(context: Context, width: Int, height: Int, iterations: Int, pal
 //         zoom = 5000.0 ;  positionX = 1.09505 ;  positionY = 0.99980 ;  iter = 1600
     }
 
-    fun generate(bitmap: IntArray) {
+    fun generate(mImage: IntArray) {
 
         var y = 0
         while (y < mHeight) {
@@ -48,7 +48,7 @@ class Mandelbrot(context: Context, width: Int, height: Int, iterations: Int, pal
                 val cX = -2.5 + x * (3.5/mWidth) / zoom
 
                 val colorIndex = calculateMandelbrot(cX, cY) * (mPalette.size - 1) / iter
-                bitmap[y * mWidth + x] = mPalette[colorIndex]
+                mImage[y * mWidth + x] = mPalette[colorIndex]
                 x++
             }
             y++
@@ -67,6 +67,8 @@ class Mandelbrot(context: Context, width: Int, height: Int, iterations: Int, pal
         }
         return i
     }
+
+
 
     fun setDimensions(width: Int, height: Int) {
         mWidth = width
